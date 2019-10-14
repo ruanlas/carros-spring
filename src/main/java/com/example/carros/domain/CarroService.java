@@ -47,22 +47,24 @@ public class CarroService {
 		return rep.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
 	}
 	
-	public Carro insert(Carro carro) {
+	public CarroDTO insert(Carro carro) {
 		Assert.isNull(carro.getId(), "Não foi possível inserir o registro");
 		
-		return rep.save(carro);
+		return CarroDTO.create(rep.save(carro));
 	}
 
-	public Carro update(Carro carro, Long id) {
+	public CarroDTO update(Carro carro, Long id) {
 		Assert.notNull(id, "Não foi possível atualizar o registro");
-		Optional<Carro> optional = getCarroById(id);
+		Optional<Carro> optional = rep.findById(id);
 		if (optional.isPresent()) {
 			Carro db = optional.get();
 			db.setNome(carro.getNome());
 			db.setTipo(carro.getTipo());
 			System.out.println("Carro id " + db.getId());
 			
-			return rep.save(db);
+			rep.save(db);
+			
+			return CarroDTO.create(db);
 		}else {
 			throw new RuntimeException("Não foi possível atualizar o registro");
 		}
@@ -79,10 +81,12 @@ public class CarroService {
 		
 	}
 	
-	public void delete(Long id) {
+	public boolean delete(Long id) {
 		Optional<Carro> carro = getCarroById(id);
 		if (carro.isPresent()) {
 			rep.deleteById(id);
+			return true;
 		}
+		return false;
 	}
 }
