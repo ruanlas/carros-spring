@@ -1,16 +1,83 @@
 package com.example.carros;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.example.carros.domain.Carro;
+import com.example.carros.domain.CarroService;
+import com.example.carros.domain.dto.CarroDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CarrosSpringApplicationTests {
 
+	@Autowired
+	private CarroService service;
+	
 	@Test
 	public void contextLoads() {
 	}
+	
+	@Test
+	public void testeSave() {
+		Carro carro = new Carro();
+		carro.setNome("Ferrari");
+		carro.setTipo("esportivos");
+		
+		CarroDTO carroDTO = service.insert(carro);
+		
+		assertNotNull(carroDTO);
+		
+		Long id = carroDTO.getId();
+		assertNotNull(id);
+		
+		Optional<CarroDTO> optional = service.getCarroById(id);
+		assertTrue(optional.isPresent());
+		
+		carroDTO = optional.get();
+		assertEquals("Ferrari", carro.getNome());
+		assertEquals("esportivos", carro.getTipo());
+		
+		service.delete(id);
+		
+		assertFalse(service.getCarroById(id).isPresent());
+	}
+	
+	@Test
+	public void testLista() {
+		List<CarroDTO> carros = service.getCarros();
+		
+		assertEquals(30, carros.size());
+	}
+	
+	@Test
+	public void testGet() {
+		Optional<CarroDTO> carrosOptional = service.getCarroById(11L);
+		
+		assertTrue(carrosOptional.isPresent());
+		
+		CarroDTO c = carrosOptional.get();
+		
+		assertEquals("Ferrari FF", c.getNome());
+	}
 
+	@Test
+	public void testListaPorTipo() {
+		
+		assertEquals(10, service.getCarroByTipo("classicos").size());
+		assertEquals(10, service.getCarroByTipo("esportivos").size());
+		assertEquals(10, service.getCarroByTipo("luxo").size());
+		assertEquals(0, service.getCarroByTipo("xxx").size());
+	}
 }
