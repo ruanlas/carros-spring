@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.hibernate.dialect.DB2390Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.carros.domain.dto.CarroDTO;
+import com.example.carros.domain.exception.ObjectNotFoundException;
 
 @Service
 public class CarroService {
@@ -36,9 +36,11 @@ public class CarroService {
 		return carros;
 	}
 
-	public Optional<CarroDTO> getCarroById(Long id) {
+//	public Optional<CarroDTO> getCarroById(Long id) {
+	public CarroDTO getCarroById(Long id) {
 //		return rep.findById(id).map(c -> new CarroDTO(c));
-		return rep.findById(id).map(CarroDTO::create);
+//		return rep.findById(id).map(CarroDTO::create);
+		return rep.findById(id).map(CarroDTO::create).orElseThrow( () -> new ObjectNotFoundException("Carro não encontrado") );
 	}
 
 	public List<CarroDTO> getCarroByTipo(String tipo) {
@@ -81,12 +83,14 @@ public class CarroService {
 		
 	}
 	
-	public boolean delete(Long id) {
-		Optional<CarroDTO> carro = getCarroById(id);
-		if (carro.isPresent()) {
-			rep.deleteById(id);
-			return true;
-		}
-		return false;
+//	public boolean delete(Long id) {
+	public void delete(Long id) {
+		rep.deleteById(id);
+//		Optional<CarroDTO> carro = getCarroById(id);
+//		if (carro.isPresent()) {
+//			rep.deleteById(id);
+//			return true;
+//		}
+//		return false;
 	}
 }

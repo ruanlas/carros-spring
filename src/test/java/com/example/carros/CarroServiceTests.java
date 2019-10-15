@@ -3,7 +3,9 @@ package com.example.carros;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +19,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.example.carros.domain.Carro;
 import com.example.carros.domain.CarroService;
 import com.example.carros.domain.dto.CarroDTO;
+import com.example.carros.domain.exception.ObjectNotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CarrosSpringApplicationTests {
+public class CarroServiceTests {
 
 	@Autowired
 	private CarroService service;
@@ -42,16 +45,25 @@ public class CarrosSpringApplicationTests {
 		Long id = carroDTO.getId();
 		assertNotNull(id);
 		
-		Optional<CarroDTO> optional = service.getCarroById(id);
-		assertTrue(optional.isPresent());
+//		Optional<CarroDTO> optional = service.getCarroById(id);
+		carroDTO = service.getCarroById(id);
+		assertNotNull(carroDTO);
+//		assertTrue(optional.isPresent());
 		
-		carroDTO = optional.get();
+//		carroDTO = optional.get();
 		assertEquals("Ferrari", carro.getNome());
 		assertEquals("esportivos", carro.getTipo());
 		
 		service.delete(id);
 		
-		assertFalse(service.getCarroById(id).isPresent());
+//		assertFalse(service.getCarroById(id).isPresent());
+		try {
+			assertNull(service.getCarroById(id));
+			fail("O carro não foi excluído");
+		} catch (ObjectNotFoundException e) {
+//			assertTrue(true);
+		}
+		
 	}
 	
 	@Test
@@ -63,11 +75,13 @@ public class CarrosSpringApplicationTests {
 	
 	@Test
 	public void testGet() {
-		Optional<CarroDTO> carrosOptional = service.getCarroById(11L);
+//		Optional<CarroDTO> carrosOptional = service.getCarroById(11L);
+		CarroDTO c = service.getCarroById(11L);
 		
-		assertTrue(carrosOptional.isPresent());
+		assertNotNull(c);
+//		assertTrue(carrosOptional.isPresent());
 		
-		CarroDTO c = carrosOptional.get();
+//		CarroDTO c = carrosOptional.get();
 		
 		assertEquals("Ferrari FF", c.getNome());
 	}
