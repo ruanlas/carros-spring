@@ -23,7 +23,7 @@ public class UploadService {
 	
 	private Path fileStorageLocation;
 	
-	@Value("${upload-dir}")
+	@Value("${upload.dir}")
 	private String uploadDirPath;
 	
 	@Autowired
