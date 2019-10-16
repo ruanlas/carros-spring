@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +23,32 @@ import com.example.carros.domain.dto.CarroDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarrosSpringApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CarrosAPITest {
+public class CarrosAPITest extends BaseAPITest{
 
 	@Autowired
 	protected TestRestTemplate rest;
 	
 	private ResponseEntity<CarroDTO> getCarro(String url) {
-		return rest.withBasicAuth("user", "123").getForEntity(url, CarroDTO.class);
+//		return rest.withBasicAuth("user", "123").getForEntity(url, CarroDTO.class);
+		return get(url, CarroDTO.class);
 	}
 	
 	private ResponseEntity<List<CarroDTO>> getCarros(String url) {
-		return rest.withBasicAuth("user", "123").exchange(
-				url, 
-				HttpMethod.GET, 
-				null, 
-				new ParameterizedTypeReference<List<CarroDTO>>() {
-				});
+//		return rest.withBasicAuth("user", "123").exchange(
+//				url, 
+//				HttpMethod.GET, 
+//				null, 
+//				new ParameterizedTypeReference<List<CarroDTO>>() {
+//				});
+		
+		HttpHeaders headers = getHeaders();
+
+        return rest.exchange(
+                url,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<List<CarroDTO>>() {
+                });
 	}
 	
 	@Test
@@ -45,7 +57,8 @@ public class CarrosAPITest {
 		carro.setNome("Porshe");
 		carro.setTipo("esportivos");
 		
-		ResponseEntity response = rest.withBasicAuth("admin", "123").postForEntity("/api/v1/carros", carro, null);
+//		ResponseEntity response = rest.withBasicAuth("admin", "123").postForEntity("/api/v1/carros", carro, null);
+		ResponseEntity response = post("/api/v1/carros", carro, null);
 		System.out.println(response);
 		
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -57,7 +70,8 @@ public class CarrosAPITest {
 		assertEquals("Porshe", c.getNome());
 		assertEquals("esportivos", c.getTipo());
 		
-		rest.withBasicAuth("admin", "123").delete(location);
+//		rest.withBasicAuth("admin", "123").delete(location);
+		delete(location, null);
 		
 		assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
 	}

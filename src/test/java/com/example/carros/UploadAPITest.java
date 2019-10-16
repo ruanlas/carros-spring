@@ -15,7 +15,7 @@ import com.example.carros.upload.UploadInput;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarrosSpringApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UploadAPITest {
+public class UploadAPITest extends BaseAPITest {
 
 	@Autowired
 	protected TestRestTemplate rest;
@@ -40,11 +40,13 @@ public class UploadAPITest {
 	
 	@Test
 	public void testUpload() {
-		ResponseEntity response = rest.withBasicAuth("admin", "123").postForEntity("/api/v1/upload", getUploadInputFile(), null);
+//		ResponseEntity response = rest.withBasicAuth("admin", "123").postForEntity("/api/v1/upload", getUploadInputFile(), null);
+		ResponseEntity response = post("/api/v1/upload", getUploadInputFile(), null);
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		
 		String url = response.getHeaders().getLocation().toString();
-		response = rest.withBasicAuth("admin", "123").getForEntity(url, String.class);
+//		response = rest.withBasicAuth("admin", "123").getForEntity(url, String.class);
+		response = get(url, String.class);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
