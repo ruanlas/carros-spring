@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,12 @@ public class CarroService {
 //		return rep.findAll().stream().map(c -> new CarroDTO(c)).collect(Collectors.toList());
 //		return rep.findAll().stream().map(CarroDTO::new).collect(Collectors.toList());
 		return rep.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());
+	}
+	
+	public List<CarroDTO> getCarros(Pageable pageable) {
+//		return rep.findAll().stream().map(c -> new CarroDTO(c)).collect(Collectors.toList());
+//		return rep.findAll().stream().map(CarroDTO::new).collect(Collectors.toList());
+		return rep.findAll(pageable).stream().map(CarroDTO::create).collect(Collectors.toList());
 	}
 	
 	public List<Carro> getCarrosFake() {
@@ -46,6 +53,12 @@ public class CarroService {
 //		return rep.findByTipo(tipo).stream().map(c -> new CarroDTO(c)).collect(Collectors.toList());
 //		return rep.findByTipo(tipo).stream().map(CarroDTO::new).collect(Collectors.toList());
 		return rep.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
+	}
+	
+	public List<CarroDTO> getCarroByTipo(String tipo, Pageable pageable) {
+//		return rep.findByTipo(tipo).stream().map(c -> new CarroDTO(c)).collect(Collectors.toList());
+//		return rep.findByTipo(tipo).stream().map(CarroDTO::new).collect(Collectors.toList());
+		return rep.findByTipo(tipo, pageable).stream().map(CarroDTO::create).collect(Collectors.toList());
 	}
 	
 	public CarroDTO insert(Carro carro) {

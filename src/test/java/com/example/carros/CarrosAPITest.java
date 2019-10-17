@@ -80,6 +80,10 @@ public class CarrosAPITest extends BaseAPITest{
 	public void testLista() {
 		List<CarroDTO> carros = getCarros("/api/v1/carros").getBody();
 		assertNotNull(carros);
+		assertEquals(10, carros.size());
+		
+		carros = getCarros("/api/v1/carros?page=0&size=30").getBody();
+		assertNotNull(carros);
 		assertEquals(30, carros.size());
 	}
 	
@@ -88,6 +92,10 @@ public class CarrosAPITest extends BaseAPITest{
 		assertEquals(10, getCarros("/api/v1/carros/tipo/classicos").getBody().size());
 		assertEquals(10, getCarros("/api/v1/carros/tipo/esportivos").getBody().size());
 		assertEquals(10, getCarros("/api/v1/carros/tipo/luxo").getBody().size());
+		
+		assertEquals(5, getCarros("/api/v1/carros/tipo/classicos?page=0&size=5").getBody().size());
+		assertEquals(5, getCarros("/api/v1/carros/tipo/esportivos?page=0&size=5").getBody().size());
+		assertEquals(5, getCarros("/api/v1/carros/tipo/luxo?page=0&size=5").getBody().size());
 		
 		assertEquals(HttpStatus.NO_CONTENT, getCarros("/api/v1/carros/tipo/xxx").getStatusCode());
 	}
