@@ -16,10 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.carros.domain.Carro;
-import com.example.carros.domain.CarroService;
-import com.example.carros.domain.dto.CarroDTO;
-import com.example.carros.domain.exception.ObjectNotFoundException;
+import com.example.carros.api.carros.Carro;
+import com.example.carros.api.carros.CarroDTO;
+import com.example.carros.api.carros.CarroService;
+import com.example.carros.exception.ObjectNotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

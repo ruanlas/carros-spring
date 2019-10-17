@@ -18,8 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.carros.domain.Carro;
-import com.example.carros.domain.dto.CarroDTO;
+import com.example.carros.api.carros.Carro;
+import com.example.carros.api.carros.CarroDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarrosSpringApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

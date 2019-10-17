@@ -1,4 +1,4 @@
-package com.example.carros.domain;
+package com.example.carros.api.carros;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.example.carros.domain.dto.CarroDTO;
-import com.example.carros.domain.exception.ObjectNotFoundException;
+import com.example.carros.exception.ObjectNotFoundException;
 
 @Service
 public class CarroService {

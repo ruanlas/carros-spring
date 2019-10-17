@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.carros.domain.UserRepository;
+import com.example.carros.api.users.UserRepository;
 
 @Service(value = "userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		com.example.carros.domain.User user = userRep.findByLogin(username);
+		com.example.carros.api.users.User user = userRep.findByLogin(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
